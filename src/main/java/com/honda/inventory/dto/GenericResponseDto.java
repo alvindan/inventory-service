@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-@JsonInclude(content = Include.NON_NULL)
+@JsonInclude(value = Include.NON_NULL)
 public class GenericResponseDto<T> {
 	
 	public static final String SUCCESS = "success";
