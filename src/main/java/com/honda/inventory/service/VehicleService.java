@@ -12,9 +12,11 @@ import com.honda.inventory.exception.ServiceException;
 import com.honda.inventory.repository.VehicleRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class VehicleService {
 	
 	private final VehicleRepository repository;
@@ -57,6 +59,16 @@ public class VehicleService {
 		return repository.findAll(
 				PageRequest.of(pageIndex, pageSize, Sort.Direction.valueOf(sortDir), sortProperties)
 				);
+	}
+	
+	public void delete(Long id) {
+		log.debug("Deleting vehicle with id={}.", id);
+		this.repository.findById(id)
+		.ifPresentOrElse(
+				repository::delete, 
+				() -> {
+					throw ServiceException.badRequest("Vehicle with id="+id+" does not exist!");
+				});
 	}
 	
 	
