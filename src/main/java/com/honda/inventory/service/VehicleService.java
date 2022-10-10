@@ -1,6 +1,9 @@
 package com.honda.inventory.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.honda.inventory.dto.VehicleRequestDto;
@@ -39,6 +42,21 @@ public class VehicleService {
 		vehicle.setColor(requestDto.getColor());
 		
 		return repository.save(vehicle);
+	}
+	
+	/**
+	 * Queries paginated data based on the parameters supplied.
+	 * 
+	 * @param sortProperties sort properties
+	 * @param sortDir values are ASC or DESC
+	 * @param pageIndex starts at 0
+	 * @param pageSize desired number of elements per page
+	 * @return  {@link Page}
+	 */
+	public Page<Vehicle> getPaginatedResults(String[] sortProperties, String sortDir, int pageIndex, int pageSize) {
+		return repository.findAll(
+				PageRequest.of(pageIndex, pageSize, Sort.Direction.valueOf(sortDir), sortProperties)
+				);
 	}
 	
 	
