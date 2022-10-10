@@ -30,6 +30,17 @@ public class VehicleService {
 		return repository.save(vehicle);
 	}
 	
+	public Vehicle update(final String inventoryCode, final VehicleRequestDto requestDto) {
+		final Vehicle vehicle = repository.findByInventoryCode(inventoryCode)
+				.orElseThrow(() -> ServiceException.badRequest("Vehicle with Inventory Code="+ inventoryCode + " does not exist!"));
+		
+		vehicle.setName(requestDto.getName());
+		vehicle.setModel(requestDto.getModel());
+		vehicle.setColor(requestDto.getColor());
+		
+		return repository.save(vehicle);
+	}
+	
 	
 	
 }

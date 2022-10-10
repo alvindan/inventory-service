@@ -4,7 +4,9 @@ import static com.honda.inventory.dto.GenericResponseDto.SUCCESS;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +38,20 @@ public class VehicleController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}
 	
+	@PutMapping("/inventory-code/{inventoryCode}")
+	public ResponseEntity<GenericResponseDto<VehicleDto>> create(
+			@PathVariable String inventoryCode,
+			@RequestBody VehicleRequestDto requestDto) {
+		
+		var vehicle = service.update(inventoryCode,requestDto);
+		
+		var responseDto = GenericResponseDto.<VehicleDto>builder()
+								.data(VehicleDto.parse(vehicle))
+								.status(SUCCESS)
+								.build();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+	}
 	
 	
 }
